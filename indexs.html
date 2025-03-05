@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stella's Picks</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #f4f4f4, #dcdcdc);
+            color: black;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: silver;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .item {
+            background: beige;
+            margin: 15px;
+            padding: 20px;
+            width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1.5s forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <header>Stella's Picks - Curated Finds Just for You!</header>
+    <div class="container">
+        <div class="item fade-in">
+            <img src="your-image-link.jpg" alt="Product 1">
+            <h3>Elegant Silver Necklace</h3>
+            <p>A timeless piece that adds elegance to any outfit.</p>
+            <a href="#">Buy Now</a>
+        </div>
+        <div class="item fade-in" style="animation-delay: 0.5s;">
+            <img src="your-image-link.jpg" alt="Product 2">
+            <h3>Stylish Beige Handbag</h3>
+            <p>Perfect for any occasion with its chic design.</p>
+            <a href="#">Buy Now</a>
+        </div>
+        <div class="item fade-in" style="animation-delay: 1s;">
+            <img src="your-image-link.jpg" alt="Product 3">
+            <h3>Luxury Black Watch</h3>
+            <p>A sophisticated touch to your everyday style.</p>
+            <a href="#">Buy Now</a>
+        </div>
+    </div>
+</body>
+</html>
