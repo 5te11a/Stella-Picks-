@@ -1,0 +1,205 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { ShoppingBag, Home, Smartphone, Palette, HandshakeIcon, Star, Mail, Instagram, Pointer as Pinterest } from 'lucide-react';
+
+interface ProductCategory {
+  title: string;
+  description: string;
+  image: string;
+  icon: React.ReactNode;
+}
+
+interface StarProps {
+  style: {
+    top: string;
+    left: string;
+    width: string;
+    height: string;
+    '--twinkle-duration': string;
+  };
+}
+
+const StarBackground: React.FC = () => {
+  const [stars, setStars] = useState<StarProps[]>([]);
+
+  useEffect(() => {
+    const generateStars = () => {
+      const newStars: StarProps[] = [];
+      const numStars = 150;
+
+      for (let i = 0; i < numStars; i++) {
+        const star: StarProps = {
+          style: {
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            width: `${Math.random() * 3 + 1}px`,
+            height: `${Math.random() * 3 + 1}px`,
+            '--twinkle-duration': `${Math.random() * 3 + 2}s`,
+          },
+        };
+        newStars.push(star);
+      }
+      setStars(newStars);
+    };
+
+    generateStars();
+  }, []);
+
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      {stars.map((star, index) => (
+        <div key={index} className="star" style={star.style as any} />
+      ))}
+    </div>
+  );
+};
+
+function App() {
+  const categories: ProductCategory[] = [
+    {
+      title: "Accessories",
+      description: "Elevate your style with our stunning collection of affordable luxury accessories. From elegant jewelry to must-have bags, find the perfect pieces to complete your look without breaking the bank.",
+      image: "https://images.unsplash.com/photo-1576053139778-7e32f2ae3cfd?auto=format&fit=crop&q=80&w=800",
+      icon: <ShoppingBag className="w-6 h-6" />
+    },
+    {
+      title: "Cute Gadgets",
+      description: "Discover our selection of adorable and functional tech accessories that make life more colorful. Quality gadgets at prices that will make you smile.",
+      image: "https://images.unsplash.com/photo-1631281956016-3cdc1b21b126?auto=format&fit=crop&q=80&w=800",
+      icon: <Smartphone className="w-6 h-6" />
+    },
+    {
+      title: "Home Decor",
+      description: "Transform your space with our beautiful collection of affordable home decorations. Create the perfect ambiance without compromising your budget.",
+      image: "https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&q=80&w=800",
+      icon: <Home className="w-6 h-6" />
+    },
+    {
+      title: "Outfits",
+      description: "Stay stylish with our carefully selected fashion pieces that help you express your unique style. Luxury looks at surprisingly affordable prices.",
+      image: "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=800",
+      icon: <Palette className="w-6 h-6" />
+    }
+  ];
+
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('fade-in-visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('.fade-in').forEach((el) => {
+      observerRef.current?.observe(el);
+    });
+
+    return () => observerRef.current?.disconnect();
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#0B1026] relative">
+      <StarBackground />
+      <div className="relative">
+        {/* Hero Section */}
+        <header className="container mx-auto px-4 py-24 text-center relative overflow-hidden">
+          <div className="relative">
+            <h1 className="text-7xl font-bold text-white mb-6 tracking-tight">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-royal-gold to-royal-silver">
+                Stella's Beauty Picks
+              </span>
+            </h1>
+            <p className="text-2xl text-royal-silver mb-8">Where Style Meets Elegance</p>
+            <p className="text-xl text-royal-silver/90 max-w-2xl mx-auto leading-relaxed">
+              Discover our carefully curated collection of beautiful accessories, gadgets, decor, and fashion pieces at 
+              <span className="text-royal-gold font-semibold"> surprisingly affordable prices</span>
+            </p>
+            <div className="flex items-center justify-center gap-2 mt-8">
+              <Star className="w-5 h-5 text-royal-gold" />
+              <span className="text-royal-silver">Premium Quality • Affordable Luxury • Curated Selection</span>
+              <Star className="w-5 h-5 text-royal-gold" />
+            </div>
+          </div>
+        </header>
+
+        {/* Categories */}
+        <main className="container mx-auto px-4 py-16">
+          <div className="grid md:grid-cols-2 gap-12">
+            {categories.map((category, index) => (
+              <div key={index} className="fade-in opacity-0 translate-y-4 transition-all duration-700 ease-out">
+                <div className="bg-white/5 backdrop-blur-md rounded-2xl overflow-hidden shadow-xl border border-royal-silver/10 hover:border-royal-gold/30 transition-all duration-500 group">
+                  <div className="flex flex-col md:flex-row">
+                    <div className="md:w-1/2 overflow-hidden">
+                      <img 
+                        src={category.image} 
+                        alt={category.title}
+                        className="h-full w-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                      />
+                    </div>
+                    <div className="md:w-1/2 p-8">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 bg-royal-gold/10 rounded-lg">
+                          {category.icon}
+                        </div>
+                        <h2 className="text-2xl font-semibold text-royal-gold">{category.title}</h2>
+                      </div>
+                      <p className="text-royal-silver mb-8">{category.description}</p>
+                      <button className="w-full bg-gradient-to-r from-royal-gold to-royal-silver text-royal-blue font-semibold px-6 py-3 rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105">
+                        Explore Products
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </main>
+
+        {/* Work With Us */}
+        <section className="container mx-auto px-4 py-16 text-center">
+          <div className="fade-in opacity-0 translate-y-4">
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-12 border border-royal-silver/10 relative overflow-hidden">
+              <div className="relative">
+                <div className="flex items-center justify-center mb-6">
+                  <div className="p-4 bg-royal-gold/10 rounded-full">
+                    <HandshakeIcon className="w-12 h-12 text-royal-gold" />
+                  </div>
+                </div>
+                <h2 className="text-4xl font-bold text-royal-gold mb-6">Work With Us</h2>
+                <p className="text-royal-silver mb-8 max-w-2xl mx-auto text-lg">
+                  Are you a brand or creator looking to collaborate? We're always excited to partner with amazing people and brands that share our vision for accessible luxury and style.
+                </p>
+                <button className="bg-gradient-to-r from-royal-purple to-royal-blue text-white font-semibold px-8 py-4 rounded-full hover:opacity-90 transition-all duration-300 transform hover:scale-105 border border-royal-gold">
+                  Get in Touch
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="container mx-auto px-4 py-12 text-center border-t border-royal-silver/10">
+          <div className="flex justify-center gap-6 mb-6">
+            <a href="#" className="text-royal-silver hover:text-royal-gold transition-colors">
+              <Mail className="w-6 h-6" />
+            </a>
+            <a href="#" className="text-royal-silver hover:text-royal-gold transition-colors">
+              <Instagram className="w-6 h-6" />
+            </a>
+            <a href="#" className="text-royal-silver hover:text-royal-gold transition-colors">
+              <Pinterest className="w-6 h-6" />
+            </a>
+          </div>
+          <p className="text-royal-silver">
+            © {new Date().getFullYear()} Stella's Beauty Picks. All rights reserved.
+          </p>
+        </footer>
+      </div>
+    </div>
+  );
+}
